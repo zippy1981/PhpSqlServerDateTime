@@ -13,7 +13,7 @@
     "phpunit/phpunit": "^6.1"
   },
   "require": {
-    "ext-pdo_odbc": "^7.1",
-    "ext-pdo_sqlsrv": "4.1.6.1"
+    "ext-pdo_odbc": "*",
+    "ext-pdo_sqlsrv": "*"
   }
 }
