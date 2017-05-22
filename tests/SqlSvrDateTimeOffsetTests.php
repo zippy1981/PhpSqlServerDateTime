@@ -6,11 +6,10 @@ namespace Zippy1981\PhpSqlServerDateTime;
 use PDO;
 use PHPUnit\Framework\TestCase;
 
-class OdbcDateTimeOffsetTests extends TestCase
+class SqlSvrDateTimeOffsetTests extends TestCase
 {
     private const CONNECTION_STRING =
-        'odbc:Driver={ODBC Driver 13 for SQL Server};Server=localhost,1433;' .
-    '   UID=sa;PWD=alwaysB3Encrypt1ng;APP=PHP Unit -- OdbcDateTimeOffsetTests';
+        'sqlsrv:Server=localhost,1433;APP=PHP Unit -- OdbcDateTimeOffsetTests';
 
     private const TEMP_TABLE_DDL = <<< EOSQL
 DROP TABLE IF EXISTS #dateTable;
@@ -26,13 +25,15 @@ EOSQL;
      */
     private $cn;
 
-    public function setup() {
-        $this->cn = new PDO(self::CONNECTION_STRING);
+    public function setup()
+    {
+        $this->cn = new PDO(self::CONNECTION_STRING, 'sa', 'alwaysB3Encrypt1ng');
         $this->cn->exec(self::TEMP_TABLE_DDL);
         $this->cn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     }
 
-    public function testStringInsert() {
+    public function testStringInsert()
+    {
         $sql = <<< EOSQL
 INSERT INTO #dateTable (message, [timestamp]) VALUES (
 		'Solid string insert.',
@@ -44,7 +45,8 @@ EOSQL;
         $this->assertNotFalse($result);
     }
 
-    public function testParamInsert() {
+    public function testParamInsert()
+    {
         $sql = <<< EOSQL
 INSERT INTO #dateTable (message, [timestamp]) VALUES (
 		'Solid string insert.',
@@ -57,7 +59,8 @@ EOSQL;
         $this->assertNotFalse($result);
     }
 
-    public function testBoundValueParamInsert() {
+    public function testBoundValueParamInsert()
+    {
         $sql = <<< EOSQL
 INSERT INTO #dateTable (message, [timestamp]) VALUES (
 		'Solid string insert.',
@@ -71,7 +74,8 @@ EOSQL;
         $this->assertNotFalse($result);
     }
 
-    public function testBoundVariableParamInsert() {
+    public function testBoundVariableParamInsert()
+    {
         $sql = <<< EOSQL
 INSERT INTO #dateTable (message, [timestamp]) VALUES (
 		'Solid string insert.',
@@ -86,7 +90,8 @@ EOSQL;
         $this->assertNotFalse($result);
     }
 
-    public function testDeclaredParamInsert() {
+    public function testDeclaredParamInsert()
+    {
         $sql = <<< EOSQL
 DECLARE @timestamp VARCHAR(35) = :datetime;
 INSERT INTO #dateTable (message, [timestamp]) VALUES (
@@ -100,4 +105,3 @@ EOSQL;
         $this->assertNotFalse($result);
     }
 }
-
